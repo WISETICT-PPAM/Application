@@ -11,8 +11,10 @@ app = Flask(__name__, template_folder='templates')
 
 @app.route('/')
 def hello_world():
-    # return 'Hello World!'
-    return render_template('home-page.html')
+    post_table = pd.read_sql("select * from post_table_with_review", conn)
+    image_name = list(post_table['image_name'])
+    post_name = list(post_table['post_name'])
+    return render_template('home-page2.html', path='static/img/product_img/', img_list=image_name, post_list=post_name)
 
 
 # filters: size, material, type
@@ -26,7 +28,11 @@ def load_data(filters, x):
     else:
         filtering = post_table[filters] == x
         filter_table = post_table[filtering]
-    return render_template('filter-page.html', tables=[filter_table.to_html(classes='data', header='true')])
+    image_name = list(filter_table['image_name'])
+    post_name = list(filter_table['post_name'])
+
+    # return render_template('filter-table.html', tables=[filter_table.to_html(classes='data', header='true')])
+    return render_template('filter-page.html', path='static/img/product_img/', img_list=image_name, post_list=post_name)
 
 
 if __name__ == '__main__':
