@@ -245,28 +245,87 @@
   <!--Main layout-->
   <main>
     <div class="container">
-    <!--Checkbox-->
+    <!--Checkbox for Size Options-->
+<form method="get" action="/product-filtering">
    <!-- Default inline 1-->
+    <div class="row">
     <div class="custom-control custom-checkbox custom-control-inline">
-      <input type="checkbox" class="custom-control-input" id="defaultInline1">
-      <label class="custom-control-label" for="defaultInline1">순면</label>
+      <input type="checkbox" name="size" value="팬티라이너" class="custom-control-input" id="defaultInline1">
+      <label class="custom-control-label" for="defaultInline1">팬티라이너</label>
     </div>
 
     <!-- Default inline 2-->
     <div class="custom-control custom-checkbox custom-control-inline">
-      <input type="checkbox" class="custom-control-input" id="defaultInline2">
-      <label class="custom-control-label" for="defaultInline2">한방</label>
+      <input type="checkbox" name="size" value="소형" class="custom-control-input" id="defaultInline2">
+      <label class="custom-control-label" for="defaultInline2">소형</label>
     </div>
 
     <!-- Default inline 3-->
     <div class="custom-control custom-checkbox custom-control-inline">
-      <input type="checkbox" class="custom-control-input" id="defaultInline3">
-      <label class="custom-control-label" for="defaultInline3">기타</label>
+      <input type="checkbox" name="size" value="중형" class="custom-control-input" id="defaultInline3">
+      <label class="custom-control-label" for="defaultInline3">중형</label>
     </div>
 
-    <form action="/type/날개형" method="get">
-    <button type="submit" class="btn btn-primary">Search!</button>
-    </form>
+    <!-- Default inline 4-->
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="size" value="대형" class="custom-control-input" id="defaultInline4">
+      <label class="custom-control-label" for="defaultInline4">대형</label>
+    </div>
+
+    <!-- Default inline 5-->
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="size" value="오버나이트" class="custom-control-input" id="defaultInline5">
+      <label class="custom-control-label" for="defaultInline5">오버나이트</label>
+    </div>
+
+    <!-- Default inline 6-->
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="size" value="울트라" class="custom-control-input" id="defaultInline6">
+      <label class="custom-control-label" for="defaultInline6">울트라</label>
+    </div>
+</div>
+
+    <!--Checkbox for Material Options-->
+   <!-- Default inline 1-->
+    <div class="row">
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="material" value="순면" class="custom-control-input" id="defaultInline7">
+      <label class="custom-control-label" for="defaultInline7">순면</label>
+    </div>
+
+    <!-- Default inline 2-->
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="material" value="한방" class="custom-control-input" id="defaultInline8">
+      <label class="custom-control-label" for="defaultInline8">한방</label>
+    </div>
+
+    <!-- Default inline 3-->
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="material" value="기타" class="custom-control-input" id="defaultInline9">
+      <label class="custom-control-label" for="defaultInline9">기타</label>
+    </div>
+    </div>
+
+        <!--Checkbox for Type Options-->
+   <!-- Default inline 1-->
+    <div class="row">
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="type" value="날개형" class="custom-control-input" id="defaultInline10">
+      <label class="custom-control-label" for="defaultInline10">날개형</label>
+    </div>
+
+    <!-- Default inline 2-->
+    <div class="custom-control custom-checkbox custom-control-inline">
+      <input type="checkbox" name="type" value="일반형" class="custom-control-input" id="defaultInline11">
+      <label class="custom-control-label" for="defaultInline11">일반형</label>
+    </div>
+</div>
+    <!--<p><input type="submit" value="Search"></p>-->
+    <p>
+        <button type="submit" class="btn btn-primary">Search!</button>
+    <button type="reset" class="btn btn-primary">Reset!</button>
+    </p>
+</form>
 
 
       <!--Navbar-->
@@ -326,7 +385,9 @@
             {% for j in range(i*4, i*4 + 4) %}
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4">
-
+            <form action="/specific" method="get">
+                <button type="submit" name="product" value={{ postcode_list[0] }}>
+                <!-- <button type="submit"> -->
             <!--Card-->
             <div class="card">
 
@@ -339,6 +400,7 @@
                 </a>
               </div>
               <!--Card image-->
+
 
               <!--Card content-->
               <div class="card-body text-center">
@@ -360,6 +422,8 @@
 
             </div>
             <!--Card-->
+            </button>
+            </form>
 
           </div>
             {% endfor %}
