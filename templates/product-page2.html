@@ -66,16 +66,6 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="https://www.facebook.com/mdbootstrap" class="nav-link waves-effect" target="_blank">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">
-              <i class="fab fa-twitter"></i>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="nav-link border border-light rounded waves-effect"
               target="_blank">
               <i class="fab fa-github mr-2"></i> PPAM Github
@@ -99,7 +89,7 @@
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
-          <img src="../static/img/product_img/A1-1.jpg" class="img-fluid" alt="">
+          <img src={{"../static/img/product_img/" + post_code + ".jpg"}} class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
@@ -124,12 +114,12 @@
 
             <p class="lead">
               <span class="mr-1">
-                <del>$200</del>
-              </span>
-              <span>$100</span>
+
+              <span>제조사 들어갈 부분</span>
+                  </span>
             </p>
 
-            <p class="lead font-weight-bold">오드리선 그린웨이 유기농 순면 오버나이트 생리대 날개형</p>
+            <p class="lead font-weight-bold">{{post_name}}</p>
 
             <p>키워드 들어갈 부분</p>
 
@@ -161,9 +151,9 @@
 
           <h4 class="my-4 h4">Additional information</h4>
 
-
+        <!-- 구매링크 연결 -->
           <li class="nav-link">
-            <a href="https://www.coupang.com/vp/products/159814823?itemId=470199035&vendorItemId=70812286585&q=%EC%98%A4%EB%93%9C%EB%A6%AC%EC%84%A0+%EA%B7%B8%EB%A6%B0%EC%9B%A8%EC%9D%B4&itemsCount=26&searchId=8c2120d1e01d403bb3541889b2e97464&rank=1&isAddedCart=">
+            <a href={{ post_url }}>
               <p>상세주소</p>
             </a>
           </li>
@@ -182,7 +172,7 @@
         <!--Grid column-->
         <div class="col-lg-4 col-md-6 mb-4">
 
-          <img src="../static/img/specific_img/A1-1S.jpg" class="img-fluid" alt="">
+          <img src={{"../static/img/specific_img/" + post_code + "S.jpg"}} class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
@@ -191,6 +181,148 @@
       <!--Grid row-->
 
     </div>
+      <!--Grid row-->
+      <div class="row d-flex justify-content-center wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 text-center">
+
+          <h4 class="my-4 h4">Review</h4>
+
+        </div>
+      </div>
+          <!--review keyword tab-->
+          <body>
+          <div class="tabmenu">
+
+        <input type="radio" name="tab" id="tab1" checked>
+        <label for="tab1">전체리뷰</label>
+        {% if kwlist != None %}
+        <input type="radio" name="tab" id="tab2">
+        <label for="tab2">{{kwlist[0]}}</label>
+
+        <input type="radio" name="tab" id="tab3">
+        <label for="tab3">{{kwlist[1]}}</label>
+
+        <input type="radio" name="tab" id="tab4">
+        <label for="tab4">{{kwlist[2]}}</label>
+
+        <input type="radio" name="tab" id="tab5">
+        <label for="tab5">{{kwlist[3]}}</label>
+
+        <input type="radio" name="tab" id="tab6">
+        <label for="tab6">{{kwlist[4]}}</label>
+          {% endif %}
+
+       <section id = "content1">
+           <p>
+               {% for i in range(review_len) %}
+           <!-- review -->
+           <div class="container">
+          <div class="row">
+            <div class="col">
+                {{ date_list[i] }}
+            </div>
+            <div class="col-sm-10">
+                {{ review_list[i] }}
+            </div>
+          </div>
+               </div>
+           {% endfor %}
+           </p>
+       </section>
+
+          {% if kwlist != None %}
+         <section id = "content2">
+           <p> tab menu2의 내용 </p>
+       </section>
+
+         <section id = "content3">
+           <p> tab menu3의 내용 </p>
+       </section>
+
+         <section id = "content4">
+           <p> tab menu4의 내용 </p>
+       </section>
+
+         <section id = "content5">
+           <p> tab menu5의 내용 </p>
+       </section>
+
+       <section id = "content6">
+           <p> tab menu6의 내용 </p>
+       </section>
+          {% endif %}
+
+    </div>
+        <!--Grid column-->
+</body>
+
+      <style>
+    body {
+        color: #555;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    h1 {
+        padding: 50px 0;
+        font-weight: 400;
+        text-align: center;
+    }
+    p {
+        margin:  0 0 20px;
+        line-height: 1.5;
+    }
+    .tabmenu {
+        min-width: 600px;
+        max-width: 1200px;
+        padding: 50px;
+        margin : 0 auto;
+    }
+
+    section {
+        display:none;
+        padding: 20px 0 0;
+        border-top: 1px solid #ddd;
+    }
+
+    input {
+        display: none;
+    }
+    label {
+       display: inline-block;
+       margin: 0 0 -1px;
+       padding: 15px 25px;
+       font-weight: 600;
+       text-align: center;
+       color: #bbb;
+       border: 1px solid transparent;
+   }
+    label:hover {
+       color:#2e9cdf;
+       cursor:pointer;
+   }
+    input:checked + label {
+       color: #555;
+       border: 1px solid #ddd;
+       border-top: 2px solid #2e9cdf;
+       border-bottom: 1px solid #ffffff;
+   }
+   #tab1:checked ~ #content1,
+   #tab2:checked ~ #content2,
+   #tab3:checked ~ #content3,
+   #tab4:checked ~ #content4,
+   #tab5:checked ~ #content5,
+   #tab6:checked ~ #content6
+   {
+       display: block;
+   }
+
+
+
+</style>
+
   </main>
   <!--Main layout-->
 
@@ -209,6 +341,7 @@
       </a>
     </div>
     /.Call to action-->
+
 
     <hr class="my-4">
 
