@@ -377,16 +377,22 @@
       </nav>
       <!--/.Navbar-->
 
+    <!-- 검색 결과 몇 건 -->
+    <div class="row">
+        <h6>검색 결과 {{ post_len }} 건의 상품을 찾았습니다</h6>
+    </div>
+
       <!--Section: Products v.3-->
       <section class="text-center mb-4">
-        {% for i in range(4) %}
+        {% for i in range(41) %}
         <!--Grid row-->
         <div class="row wow fadeIn">
             {% for j in range(i*4, i*4 + 4) %}
+                {% if j < post_len %}
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4">
             <form action="/specific" method="get">
-                <button type="submit" name="product" value={{ postcode_list[0] }}>
+                <button type="submit" name="product" value={{ postcode_list[j] }}>
                 <!-- <button type="submit"> -->
             <!--Card-->
             <div class="card">
@@ -426,11 +432,48 @@
             </form>
 
           </div>
+                {% endif %}
+                {% else %}
+                <!-- 상품이 없는 경우 -->
+                <div class="col-lg-3 col-md-6 mb-4" style="visibility: hidden">
+            <!--Card-->
+            <div class="card">
+
+              <!--Card image-->
+              <div class="view overlay">
+                <img src={{ path + 'A1-1.jpg' }} class="card-img-top"
+                  alt="">
+                <a>
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+            </div>
+              <!--Card image-->
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+                <a href="" class="grey-text">
+                  <h6>제조사</h6>
+                </a>
+                <h6>
+                  <strong>
+                    <a href="" class="dark-grey-text">{{ '상품이 더이상 없습니다' }}
+                      <!--<span class="badge badge-pill danger-color">NEW</span>-->
+                    </a>
+                  </strong>
+                </h6>
+
+
+              </div>
+              <!--Card content-->
+
+            </div>
+            <!--Card-->
+
             {% endfor %}
         </div>
+            {% endfor %}
         <!--Grid row-->
-
-{% endfor %}
       </section>
       <!--Section: Products v.3-->
 
