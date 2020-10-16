@@ -10,8 +10,14 @@ app = Flask(__name__, template_folder='templates')
 
 
 '''
-키워드 버튼, 리뷰 띄우기 
-탭메뉴에 전체리뷰 버튼도 있어야 할듯?
+키워드 말 깔끔하게 정리 필요 (ex. 얇 -> 얇은)
++ 키워드 5개 안되는 경우 처리 필요
+
+제조사 넣기 
+
+검색기능 넣으면 좋을듯 
+
+체크박스, 전체적인 디자인 수정 
 
 제품별 성분분석표 페이지 
 '''
@@ -79,10 +85,14 @@ def load_specific_page():
     post_code = args_dict['product']
 
     # 제품 기본 정보 가져오기
-    select_query = "select post_name, post_url from post_table_with_review where post_code = " + "'" + post_code + "'"
+    select_query = "select post_name, post_url, post_table_with_review.size, material, post_table_with_review.type\
+                    from post_table_with_review where post_code = " + "'" + post_code + "'"
     post_table = pd.read_sql(select_query, conn)
     post_name = post_table['post_name'][0]
     post_url = post_table['post_url'][0]
+    size = post_table['size'][0]
+    material = post_table['material'][0]
+    type = post_table['type'][0]
 
     # 제품 리뷰 가져오기
     select_query = "select * from review_table where review_code like " + "'" + post_code + "-%'"
@@ -104,13 +114,48 @@ def load_specific_page():
         kw5 = keyword_table['keyword5'][0]
         kwlist = [kw1, kw2, kw3, kw4, kw5]
 
-        # 해당 키워드를 포함하는 리뷰 가져오기 > 구현필요
-        select_query = "select * from review_keyword_table where review_code like " + "'" + post_code + "-%'"
+        # 해당 키워드를 포함하는 리뷰 가져오기
+        select_query = "select rk.*, r.review_raw, r.review_date from review_keyword_table rk join review_table r \
+                        on rk.review_code = r.review_code where r.review_code like " + "'" + post_code + "-%'"
         review_keyword_table = pd.read_sql(select_query, conn)
+
+        def review_for_kw(kw):
+            flag = review_keyword_table[kw] == '1'
+            reviews = list(review_keyword_table[flag]['review_raw'])
+            dates = list(review_keyword_table[flag]['review_date'])
+            review_for_kw_list = [(x, y) for x, y in zip(dates, reviews)]
+            return review_for_kw_list
+
+        review_for_kw1 = review_for_kw('keyword1')
+        review_for_kw2 = review_for_kw('keyword2')
+        review_for_kw3 = review_for_kw('keyword3')
+        review_for_kw4 = review_for_kw('keyword4')
+        review_for_kw5 = review_for_kw('keyword5')
+        list1_len = len(review_for_kw1)
+        list2_len = len(review_for_kw2)
+        list3_len = len(review_for_kw3)
+        list4_len = len(review_for_kw4)
+        list5_len = len(review_for_kw5)
+
     else:
         kwlist = None
+        review_for_kw1 = None
+        review_for_kw2 = None
+        review_for_kw3 = None
+        review_for_kw4 = None
+        review_for_kw5 = None
+        list1_len = None
+        list2_len = None
+        list3_len = None
+        list4_len = None
+        list5_len = None
 
-    return render_template('product-page2.html', post_code=post_code, post_name=post_name, post_url=post_url, kwlist=kwlist, date_list=date_list, review_list=review_list, review_len=review_len)
+    return render_template('product-page2.html', post_code=post_code, post_name=post_name, post_url=post_url, \
+                           size=size, material=material, type=type,\
+                           kwlist=kwlist, date_list=date_list, review_list=review_list, review_len=review_len, \
+                           review_for_kw1=review_for_kw1, review_for_kw2=review_for_kw2, review_for_kw3=review_for_kw3, \
+                           review_for_kw4=review_for_kw4, review_for_kw5=review_for_kw5, \
+                           list1_len=list1_len, list2_len=list2_len, list3_len=list3_len, list4_len=list4_len, list5_len=list5_len)
 
 
 if __name__ == '__main__':
