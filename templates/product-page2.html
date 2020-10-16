@@ -98,17 +98,17 @@
         <div class="col-md-6 mb-4">
 
           <!--Content-->
-          <div class="p-4">
+          <p class="p-4">
 
             <div class="mb-3">
               <a href="">
-                <span class="badge purple mr-1">Category 2</span>
+                <span class="badge purple mr-1">{{ size }}</span>
               </a>
               <a href="">
-                <span class="badge blue mr-1">New</span>
+                <span class="badge blue mr-1">{{ material }}</span>
               </a>
               <a href="">
-                <span class="badge red mr-1">Bestseller</span>
+                <span class="badge red mr-1">{{ type }}</span>
               </a>
             </div>
 
@@ -121,7 +121,26 @@
 
             <p class="lead font-weight-bold">{{post_name}}</p>
 
-            <p>키워드 들어갈 부분</p>
+              <!-- 키워드들 -->
+            <div class="row">
+              <p><mark>{{ kwlist[0] }}</mark></p>
+            <div style="visibility: hidden">
+                <p>공</p>
+                </div>
+              <p><mark>{{ kwlist[1] }}</mark></p>
+                <div style="visibility: hidden">
+                <p>공</p>
+                </div>
+                <p><mark>{{ kwlist[2] }}</mark></p>
+                <div style="visibility: hidden">
+                <p>공</p>
+                </div>
+                <p><mark>{{ kwlist[3] }}</mark></p>
+                <div style="visibility: hidden">
+                <p>공</p>
+                </div>
+                <p><mark>{{ kwlist[4] }}</mark></p>
+        </div>
 
             <form class="d-flex justify-content-left">
               <!-- Default input -->
@@ -197,6 +216,7 @@
 
         <input type="radio" name="tab" id="tab1" checked>
         <label for="tab1">전체리뷰</label>
+
         {% if kwlist != None %}
         <input type="radio" name="tab" id="tab2">
         <label for="tab2">{{kwlist[0]}}</label>
@@ -234,23 +254,83 @@
 
           {% if kwlist != None %}
          <section id = "content2">
-           <p> tab menu2의 내용 </p>
+           <p> {% for i in range(list1_len) %}
+           <!-- review -->
+           <div class="container">
+          <div class="row">
+            <div class="col">
+                {{ review_for_kw1[i][0] }}
+            </div>
+            <div class="col-sm-10">
+                {{ review_for_kw1[i][1] }}
+            </div>
+          </div>
+               </div>
+           {% endfor %} </p>
        </section>
 
          <section id = "content3">
-           <p> tab menu3의 내용 </p>
+           <p> {% for i in range(list2_len) %}
+           <!-- review -->
+           <div class="container">
+          <div class="row">
+            <div class="col">
+                {{ review_for_kw2[i][0] }}
+            </div>
+            <div class="col-sm-10">
+                {{ review_for_kw2[i][1] }}
+            </div>
+          </div>
+               </div>
+           {% endfor %} </p>
        </section>
 
          <section id = "content4">
-           <p> tab menu4의 내용 </p>
+           <p> {% for i in range(list3_len) %}
+           <!-- review -->
+           <div class="container">
+          <div class="row">
+            <div class="col">
+                {{ review_for_kw3[i][0] }}
+            </div>
+            <div class="col-sm-10">
+                {{ review_for_kw3[i][1] }}
+            </div>
+          </div>
+               </div>
+           {% endfor %} </p>
        </section>
 
          <section id = "content5">
-           <p> tab menu5의 내용 </p>
+           <p> {% for i in range(list4_len) %}
+           <!-- review -->
+           <div class="container">
+          <div class="row">
+            <div class="col">
+                {{ review_for_kw4[i][0] }}
+            </div>
+            <div class="col-sm-10">
+                {{ review_for_kw4[i][1] }}
+            </div>
+          </div>
+               </div>
+           {% endfor %} </p>
        </section>
 
        <section id = "content6">
-           <p> tab menu6의 내용 </p>
+           <p> {% for i in range(list5_len) %}
+           <!-- review -->
+           <div class="container">
+          <div class="row">
+            <div class="col">
+                {{ review_for_kw5[i][0] }}
+            </div>
+            <div class="col-sm-10">
+                {{ review_for_kw5[i][1] }}
+            </div>
+          </div>
+               </div>
+           {% endfor %} </p>
        </section>
           {% endif %}
 
