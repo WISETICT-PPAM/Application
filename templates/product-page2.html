@@ -23,9 +23,11 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+      <form action="/" method="get">
+        <a class="navbar-brand waves-effect">
         <strong class="blue-text">생리뷰</strong>
       </a>
+          </form>
 
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -122,6 +124,7 @@
             <p class="lead font-weight-bold">{{post_name}}</p>
 
               <!-- 키워드들 -->
+            {% if kwlist != None %}
             <div class="row">
               <p><mark>{{ kwlist[0] }}</mark></p>
             <div style="visibility: hidden">
@@ -141,7 +144,7 @@
                 </div>
                 <p><mark>{{ kwlist[4] }}</mark></p>
         </div>
-
+{% endif %}
             <form class="d-flex justify-content-left">
               <!-- Default input -->
               <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
@@ -190,8 +193,10 @@
 
         <!--Grid column-->
         <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src={{"../static/img/specific_img/" + post_code + "S.jpg"}} class="img-fluid" alt="">
+    {% if ('J' or 'K' or 'L' or 'M' or 'N') in post_code %}
+          <img src={{"../static/img/specific_img/" + post_code + "S.PNG"}} class="img-fluid" alt="">
+            {% endif %}
+            <img src={{"../static/img/specific_img/" + post_code + "S.jpg"}} class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
@@ -235,6 +240,15 @@
           {% endif %}
 
        <section id = "content1">
+       <div class="container">
+          <div class="row">
+            <div class="col">DATE
+            </div>
+            <div class="col-sm-10">
+                REVIEW
+            </div>
+          </div>
+               </div>
            <p>
                {% for i in range(review_len) %}
            <!-- review -->
@@ -402,7 +416,23 @@
 
 
 </style>
+   <div class="row d-flex justify-content-center wow fadeIn">
+           <div class="col-md-6 text-center">
+               <h4 class="my-4 h4">제품 구성 성분</h4>
+           </div>
 
+   </div>
+  <div class="container">
+          <div class="row">
+            <div class="col">성분명
+            </div>
+            <div class="col-sm-8">
+                상세설명
+            </div>
+              <div class="col">위험도
+            </div>
+          </div>
+               </div>
   </main>
   <!--Main layout-->
 

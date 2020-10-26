@@ -20,6 +20,8 @@ app = Flask(__name__, template_folder='templates')
 체크박스, 전체적인 디자인 수정 
 
 제품별 성분분석표 페이지 
+https://getbootstrap.com/docs/4.5/components/scrollspy/#mdo
+위험도 따라서 셀 색을 바꾸면 어떨까
 '''
 
 
@@ -97,10 +99,14 @@ def load_specific_page():
     # 제품 리뷰 가져오기
     select_query = "select * from review_table where review_code like " + "'" + post_code + "-%'"
     print(select_query)
-    review_table = pd.read_sql(select_query, conn)
+    review_table_ori = pd.read_sql(select_query, conn)
+    # 최신순 정렬
+    review_table = review_table_ori.sort_values(by='review_date', axis=0, ascending=False)
+    # 중복 제거
+    review_table = review_table.drop_duplicates('review_raw', keep='last')
     date_list = list(review_table['review_date'])
     review_list = list(review_table['review_raw'])
-    review_len = len(review_list)
+    review_len = len(review_table_ori)
 
     # 리뷰수 20개 넘어야만 키워드 있음
     if review_len >= 20:
