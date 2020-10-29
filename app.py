@@ -9,29 +9,24 @@ curs = conn.cursor(pymysql.cursors.DictCursor)
 app = Flask(__name__, template_folder='templates')
 
 
-'''
-키워드 말 깔끔하게 정리 필요 (ex. 얇 -> 얇은)
-+ 키워드 5개 안되는 경우 처리 필요
-
-제조사 넣기 
-
-검색기능 넣으면 좋을듯 
-
-체크박스, 전체적인 디자인 수정 
-
-제품별 성분분석표 페이지 
-https://getbootstrap.com/docs/4.5/components/scrollspy/#mdo
-위험도 따라서 셀 색을 바꾸면 어떨까
-'''
-
-
 @app.route('/')
 def hello_world():
     post_table = pd.read_sql("select * from post_table_with_review", conn)
     post_code = list(post_table['post_code'])
     image_name = list(post_table['image_name'])
     post_name = list(post_table['post_name'])
-    return render_template('home-page2.html', path='static/img/product_img/', postcode_list=post_code, img_list=image_name, post_list=post_name, post_len=len(post_code))
+    company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
+    code_list = list(company_table['code'])
+    company = list(company_table['company'])
+    company_list = []
+    for post in post_code:
+        for index, code in enumerate(code_list):
+            if code_list[index] == post[0]:
+                company_list.append(company[index])
+    print(len(post_code))
+    print(len(company_list))
+
+    return render_template('home-page2.html', path='static/img/product_img/', postcode_list=post_code, img_list=image_name, post_list=post_name, post_len=len(post_code), company_list=company_list)
 
 
 # 체크박스 필터링 검색 구현
@@ -96,6 +91,14 @@ def load_specific_page():
     material = post_table['material'][0]
     type = post_table['type'][0]
 
+    # 제조사 가져오기
+    company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
+    code_list = list(company_table['code'])
+    company = list(company_table['company'])
+    for index, code in enumerate(code_list):
+        if code_list[index] == post_code[0]:
+            company_name = company[index]
+
     # 제품 리뷰 가져오기
     select_query = "select * from review_table where review_code like " + "'" + post_code + "-%'"
     print(select_query)
@@ -106,7 +109,7 @@ def load_specific_page():
     review_table = review_table.drop_duplicates('review_raw', keep='last')
     date_list = list(review_table['review_date'])
     review_list = list(review_table['review_raw'])
-    review_len = len(review_table_ori)
+    review_len = len(review_table)
 
     # 리뷰수 20개 넘어야만 키워드 있음
     if review_len >= 20:
@@ -119,6 +122,13 @@ def load_specific_page():
         kw4 = keyword_table['keyword4'][0]
         kw5 = keyword_table['keyword5'][0]
         kwlist = [kw1, kw2, kw3, kw4, kw5]
+
+        # 키워드 말 바꾸기
+        for i in range(len(kwlist)):
+            kwlist[i] = kwlist[i].replace("얇", "얇음")
+            kwlist[i] = kwlist[i].replace("재구", "재구매")
+            kwlist[i] = kwlist[i].replace("쓸리는", "쓸림")
+            kwlist[i] = kwlist[i].replace("쓸리", "쓸림")
 
         # 해당 키워드를 포함하는 리뷰 가져오기
         select_query = "select rk.*, r.review_raw, r.review_date from review_keyword_table rk join review_table r \
@@ -156,12 +166,73 @@ def load_specific_page():
         list4_len = None
         list5_len = None
 
+    # 제품 성분 리스트 불러오기
+    sql = "select * from post_component_table where post_code = " + "'" + post_code + "'"
+    post_component_table = pd.read_sql(sql, conn)
+    component_list = []
+    for i in range(1,21):
+        # null 값이 아닐 경우에만 리스트에 추가
+        if post_component_table['component'+str(i)][0] != "":
+            component_list.append(post_component_table['component'+str(i)][0])
+
+    # 성분별 설명 및 유해정보 불러오기
+    component = "("
+    for index, c in enumerate(component_list):
+        component += "'" + c + "'"
+        if index < len(component_list)-1:
+            component += ','
+    component += ")"
+    # 해당 제품에 있는 성분만 테이블로 불러오기
+    sql = "select * from components_analysis_table where components in " + component
+    component_analysis_table = pd.read_sql(sql, conn)
+    component_list = list(component_analysis_table['components'])
+    text_list = []
+    for i in range(len(component_analysis_table)):
+        temp = []
+        temp.append(component_analysis_table['text'][i].replace("x"," "))
+        harzards = ""
+        for j in range(1,9):
+            harzard_code = component_analysis_table['col'+str(j)][i]
+            print(harzard_code)
+            if 'H' in harzard_code:
+                sql = "select harzard_text from harzard_code_table where harzard_code =" + "'" + harzard_code + "'"
+                harzard_text = pd.read_sql(sql, conn)['harzard_text'][0]
+                harzards += harzard_text + ", "
+                print(harzard_text)
+        temp.append(harzards)
+        text_list.append(temp)
+
     return render_template('product-page2.html', post_code=post_code, post_name=post_name, post_url=post_url, \
                            size=size, material=material, type=type,\
                            kwlist=kwlist, date_list=date_list, review_list=review_list, review_len=review_len, \
                            review_for_kw1=review_for_kw1, review_for_kw2=review_for_kw2, review_for_kw3=review_for_kw3, \
                            review_for_kw4=review_for_kw4, review_for_kw5=review_for_kw5, \
-                           list1_len=list1_len, list2_len=list2_len, list3_len=list3_len, list4_len=list4_len, list5_len=list5_len)
+                           list1_len=list1_len, list2_len=list2_len, list3_len=list3_len, list4_len=list4_len, list5_len=list5_len,\
+                           company_name=company_name, component_list=component_list, component_len=len(component_list), text_list=text_list)
+
+
+# 검색기능 구현하기
+@app.route('/search', methods=['GET'])
+def search():
+    url = request.url
+    search_query = url.split('?')[1].split('=')[1]
+    post_table = pd.read_sql("select * from post_table_with_review where post_name like " + "'" + search_query + "%'", conn)
+    post_code = list(post_table['post_code'])
+    image_name = list(post_table['image_name'])
+    post_name = list(post_table['post_name'])
+    company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
+    code_list = list(company_table['code'])
+    company = list(company_table['company'])
+    company_list = []
+    for post in post_code:
+        for index, code in enumerate(code_list):
+            if code_list[index] == post[0]:
+                company_list.append(company[index])
+    print(len(post_code))
+    print(len(company_list))
+
+    return render_template('home-page2.html', path='static/img/product_img/', postcode_list=post_code,
+                           img_list=image_name, post_list=post_name, post_len=len(post_code), company_list=company_list)
 
 
 if __name__ == '__main__':

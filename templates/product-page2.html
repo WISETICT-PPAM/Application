@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Material Design Bootstrap</title>
+  <title>PPAMWeb</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Bootstrap core CSS -->
@@ -15,7 +15,6 @@
   <!-- Your custom styles (optional) -->
   <link href="../static/css/style.min.css" rel="stylesheet">
 </head>
-
 <body>
 
   <!-- Navbar -->
@@ -47,15 +46,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">Category</a>
-          <!-- /li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="https://mdbootstrap.com/docs/jquery/getting-started/download/"
-              target="_blank">Free download</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="https://mdbootstrap.com/education/bootstrap/" target="_blank">Free
-              tutorials</a>
-          </li> -->
         </ul>
 
         <!-- Right -->
@@ -74,9 +64,7 @@
             </a>
           </li>
         </ul>
-
       </div>
-
     </div>
   </nav>
   <!-- Navbar -->
@@ -117,7 +105,7 @@
             <p class="lead">
               <span class="mr-1">
 
-              <span>제조사 들어갈 부분</span>
+              <span>{{company_name}}</span>
                   </span>
             </p>
 
@@ -176,7 +164,7 @@
         <!-- 구매링크 연결 -->
           <li class="nav-link">
             <a href={{ post_url }}>
-              <p>상세주소</p>
+              <p>구매링크</p>
             </a>
           </li>
         </div>
@@ -211,7 +199,8 @@
         <!--Grid column-->
         <div class="col-md-6 text-center">
 
-          <h4 class="my-4 h4">Review</h4>
+          <h4 class="my-4 h4">Review & Component Analysis</h4>
+            <h6>성분 정보 출처 : 안전보건공단 화학물질정보_안전보건자료(MSDS)</h6>
 
         </div>
       </div>
@@ -220,7 +209,7 @@
           <div class="tabmenu">
 
         <input type="radio" name="tab" id="tab1" checked>
-        <label for="tab1">전체리뷰</label>
+        <label for="tab1" style="font-weight:bold">전체리뷰</label>
 
         {% if kwlist != None %}
         <input type="radio" name="tab" id="tab2">
@@ -239,115 +228,154 @@
         <label for="tab6">{{kwlist[4]}}</label>
           {% endif %}
 
+          <input type="radio" name="tab" id="tab7">
+        <label for="tab7" style="font-weight:bold">성분분석표</label>
+
        <section id = "content1">
-       <div class="container">
-          <div class="row">
-            <div class="col">DATE
-            </div>
-            <div class="col-sm-10">
-                REVIEW
-            </div>
-          </div>
-               </div>
-           <p>
-               {% for i in range(review_len) %}
-           <!-- review -->
-           <div class="container">
-          <div class="row">
-            <div class="col">
-                {{ date_list[i] }}
-            </div>
-            <div class="col-sm-10">
-                {{ review_list[i] }}
-            </div>
-          </div>
-               </div>
-           {% endfor %}
-           </p>
+       <table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">DATE</th>
+      <th scope="col" style="width: 85%">REVIEW</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(review_len) %}
+    <tr>
+      <th scope="row">{{ date_list[i] }}</th>
+      <td>{{ review_list[i] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
        </section>
 
           {% if kwlist != None %}
          <section id = "content2">
-           <p> {% for i in range(list1_len) %}
-           <!-- review -->
-           <div class="container">
-          <div class="row">
-            <div class="col">
-                {{ review_for_kw1[i][0] }}
-            </div>
-            <div class="col-sm-10">
-                {{ review_for_kw1[i][1] }}
-            </div>
-          </div>
-               </div>
-           {% endfor %} </p>
+         <table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">DATE</th>
+      <th scope="col" style="width: 85%">REVIEW</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(list1_len) %}
+    <tr>
+      <th scope="row">{{ review_for_kw1[i][0] }}</th>
+      <td>{{ review_for_kw1[i][1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
        </section>
 
          <section id = "content3">
-           <p> {% for i in range(list2_len) %}
-           <!-- review -->
-           <div class="container">
-          <div class="row">
-            <div class="col">
-                {{ review_for_kw2[i][0] }}
-            </div>
-            <div class="col-sm-10">
-                {{ review_for_kw2[i][1] }}
-            </div>
-          </div>
-               </div>
-           {% endfor %} </p>
+           <table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">DATE</th>
+      <th scope="col" style="width: 85%">REVIEW</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(list2_len) %}
+    <tr>
+      <th scope="row">{{ review_for_kw2[i][0] }}</th>
+      <td>{{ review_for_kw2[i][1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
        </section>
 
          <section id = "content4">
-           <p> {% for i in range(list3_len) %}
-           <!-- review -->
-           <div class="container">
-          <div class="row">
-            <div class="col">
-                {{ review_for_kw3[i][0] }}
-            </div>
-            <div class="col-sm-10">
-                {{ review_for_kw3[i][1] }}
-            </div>
-          </div>
-               </div>
-           {% endfor %} </p>
+           <table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">DATE</th>
+      <th scope="col" style="width: 85%">REVIEW</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(list3_len) %}
+    <tr>
+      <th scope="row">{{ review_for_kw3[i][0] }}</th>
+      <td>{{ review_for_kw3[i][1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
        </section>
 
          <section id = "content5">
-           <p> {% for i in range(list4_len) %}
-           <!-- review -->
-           <div class="container">
-          <div class="row">
-            <div class="col">
-                {{ review_for_kw4[i][0] }}
-            </div>
-            <div class="col-sm-10">
-                {{ review_for_kw4[i][1] }}
-            </div>
-          </div>
-               </div>
-           {% endfor %} </p>
+           <table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">DATE</th>
+      <th scope="col" style="width: 85%">REVIEW</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(list4_len) %}
+    <tr>
+      <th scope="row">{{ review_for_kw4[i][0] }}</th>
+      <td>{{ review_for_kw4[i][1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
        </section>
 
        <section id = "content6">
-           <p> {% for i in range(list5_len) %}
-           <!-- review -->
-           <div class="container">
-          <div class="row">
-            <div class="col">
-                {{ review_for_kw5[i][0] }}
-            </div>
-            <div class="col-sm-10">
-                {{ review_for_kw5[i][1] }}
-            </div>
-          </div>
-               </div>
-           {% endfor %} </p>
+           <table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">DATE</th>
+      <th scope="col" style="width: 85%">REVIEW</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(list5_len) %}
+    <tr>
+      <th scope="row">{{ review_for_kw5[i][0] }}</th>
+      <td>{{ review_for_kw5[i][1] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
        </section>
           {% endif %}
 
+<section id = "content7">
+    <table class="table" style="width: 100%">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">성분명</th>
+      <th scope="col" style="width: 40%">성분정보</th>
+      <th scope="col" style="width: 45%">유해성</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(component_len) %}
+      {% if text_list[i][1] != "" %}
+    <tr>
+      <th scope="row" style="color:#ff0000;font-weight:bold">{{ component_list[i] }}</th>
+      <td>{{ text_list[i][0] }}</td>
+      <td>{{ text_list[i][1] }}</td>
+    </tr>
+      {% endif %}
+      {% if text_list[i][1] == "" %}
+      <tr>
+      <th scope="row">{{ component_list[i] }}</th>
+      <td>{{ text_list[i][0] }}</td>
+      <td>{{ text_list[i][1] }}</td>
+    </tr>
+      {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+</section>
     </div>
         <!--Grid column-->
 </body>
@@ -408,7 +436,9 @@
    #tab3:checked ~ #content3,
    #tab4:checked ~ #content4,
    #tab5:checked ~ #content5,
-   #tab6:checked ~ #content6
+   #tab6:checked ~ #content6,
+   #tab7:checked ~ #content7
+
    {
        display: block;
    }
@@ -416,23 +446,7 @@
 
 
 </style>
-   <div class="row d-flex justify-content-center wow fadeIn">
-           <div class="col-md-6 text-center">
-               <h4 class="my-4 h4">제품 구성 성분</h4>
-           </div>
 
-   </div>
-  <div class="container">
-          <div class="row">
-            <div class="col">성분명
-            </div>
-            <div class="col-sm-8">
-                상세설명
-            </div>
-              <div class="col">위험도
-            </div>
-          </div>
-               </div>
   </main>
   <!--Main layout-->
 
