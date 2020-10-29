@@ -318,9 +318,16 @@
     <button type="reset" class="btn btn-light">Reset!</button>
     </p>
 </form>
+        <!-- Search -->
+<form class="form-inline" method="GET" action="/search">
+<div class="md-form my-0">
+  <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+</div>
+    <div class="button">
+    <button type="submit" class="btn btn-primary">Search!</button>
+</div>
+</form>
     </nav>
-
-
 
 
     <!-- 검색 결과 몇 건 -->
@@ -358,7 +365,7 @@
               <div class="card-body text-center">
                 <!--Category & Title-->
                 <a href="" class="grey-text">
-                  <h6>제조사</h6>
+                  <h6>{{company_list[j]}}</h6>
                 </a>
                 <h6>
                   <strong>
