@@ -71,8 +71,16 @@ def product_filtering():
     post_code = list(post_table['post_code'])
     image_name = list(post_table['image_name'])
     post_name = list(post_table['post_name'])
+    company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
+    code_list = list(company_table['code'])
+    company = list(company_table['company'])
+    company_list = []
+    for post in post_code:
+        for index, code in enumerate(code_list):
+            if code_list[index] == post[0]:
+                company_list.append(company[index])
     print('찾은 상품 수 : ', len(post_code))
-    return render_template('home-page2.html', path='static/img/product_img/', postcode_list=post_code, img_list=image_name, post_list=post_name, post_len=len(post_code))
+    return render_template('home-page2.html', path='static/img/product_img/', postcode_list=post_code, img_list=image_name, post_list=post_name, post_len=len(post_code),company_list=company_list)
 
 
 # 제품별 상세페이지 띄우기
@@ -125,10 +133,13 @@ def load_specific_page():
 
         # 키워드 말 바꾸기
         for i in range(len(kwlist)):
-            kwlist[i] = kwlist[i].replace("얇", "얇음")
-            kwlist[i] = kwlist[i].replace("재구", "재구매")
-            kwlist[i] = kwlist[i].replace("쓸리는", "쓸림")
-            kwlist[i] = kwlist[i].replace("쓸리", "쓸림")
+            try:
+                kwlist[i] = kwlist[i].replace("얇", "얇음")
+                kwlist[i] = kwlist[i].replace("재구", "재구매")
+                kwlist[i] = kwlist[i].replace("쓸리는", "쓸림")
+                kwlist[i] = kwlist[i].replace("쓸리", "쓸림")
+            except:
+                pass
 
         # 해당 키워드를 포함하는 리뷰 가져오기
         select_query = "select rk.*, r.review_raw, r.review_date from review_keyword_table rk join review_table r \
