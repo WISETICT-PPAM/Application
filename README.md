@@ -12,6 +12,8 @@
 - TYPE
   - 날개형 / 일반형  
   
+  <p align="center"><image src="https://user-images.githubusercontent.com/46590618/97772832-fdf59180-1b8d-11eb-89dd-fb5795d0198d.png" width="80%"></p>
+  
 2. 제품 상세페이지에서 성분분석 정보 제공
 - 제품 구성성분표
 - 해당 성분의 위험도  
