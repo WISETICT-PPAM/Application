@@ -9,20 +9,21 @@ curs = conn.cursor(pymysql.cursors.DictCursor)
 app = Flask(__name__, template_folder='templates')
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def hello_world():
     post_table = pd.read_sql("select * from post_table_with_review", conn)
     post_code = list(post_table['post_code'])
     image_name = list(post_table['image_name'])
     post_name = list(post_table['post_name'])
-    company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
-    code_list = list(company_table['code'])
-    company = list(company_table['company'])
-    company_list = []
-    for post in post_code:
-        for index, code in enumerate(code_list):
-            if code_list[index] == post[0]:
-                company_list.append(company[index])
+    company_list = list(post_table['product_name'])
+    # company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
+    # code_list = list(company_table['code'])
+    # company = list(company_table['company'])
+    # company_list = []
+    # for post in post_code:
+    #     for index, code in enumerate(code_list):
+    #         if code_list[index] == post[0]:
+    #             company_list.append(company[index])
     print(len(post_code))
     print(len(company_list))
 
@@ -80,6 +81,7 @@ def product_filtering():
             if code_list[index] == post[0]:
                 company_list.append(company[index])
     print('찾은 상품 수 : ', len(post_code))
+
     return render_template('home-page2.html', path='static/img/product_img/', postcode_list=post_code, img_list=image_name, post_list=post_name, post_len=len(post_code),company_list=company_list)
 
 
@@ -90,22 +92,23 @@ def load_specific_page():
     post_code = args_dict['product']
 
     # 제품 기본 정보 가져오기
-    select_query = "select post_name, post_url, post_table_with_review.size, material, post_table_with_review.type\
+    select_query = "select post_name, post_url, post_table_with_review.size, material, post_table_with_review.type, product_name\
                     from post_table_with_review where post_code = " + "'" + post_code + "'"
     post_table = pd.read_sql(select_query, conn)
     post_name = post_table['post_name'][0]
     post_url = post_table['post_url'][0]
+    company_name = post_table['product_name'][0]
     size = post_table['size'][0]
     material = post_table['material'][0]
     type = post_table['type'][0]
 
-    # 제조사 가져오기
-    company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
-    code_list = list(company_table['code'])
-    company = list(company_table['company'])
-    for index, code in enumerate(code_list):
-        if code_list[index] == post_code[0]:
-            company_name = company[index]
+    # # 제조사 가져오기
+    # company_table = pd.read_csv('static/companycode.csv', encoding='cp949')
+    # code_list = list(company_table['code'])
+    # company = list(company_table['company'])
+    # for index, code in enumerate(code_list):
+    #     if code_list[index] == post_code[0]:
+    #         company_name = company[index]
 
     # 제품 리뷰 가져오기
     select_query = "select * from review_table where review_code like " + "'" + post_code + "-%'"
@@ -227,7 +230,7 @@ def load_specific_page():
 def search():
     url = request.url
     search_query = url.split('?')[1].split('=')[1]
-    post_table = pd.read_sql("select * from post_table_with_review where post_name like " + "'" + search_query + "%'", conn)
+    post_table = pd.read_sql("select * from post_table_with_review where post_name like " + "'%" + search_query + "%'", conn)
     post_code = list(post_table['post_code'])
     image_name = list(post_table['image_name'])
     post_name = list(post_table['post_name'])
